@@ -1,0 +1,5 @@
+git add .                       # Add all files
+git add FolderName/FileName     # Add one file
+git commit -m "message"         # Commit
+git push                        # Upload to GitHub
+git pull                        # Download latest changes
