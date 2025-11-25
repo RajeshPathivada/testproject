@@ -44,7 +44,11 @@ class POManager{
         return new RegistrationPage(this.page)
     } 
 
+    async newmethod(){
 
+        
+    }
+   
 }
 module.exports={POManager}; 
 
