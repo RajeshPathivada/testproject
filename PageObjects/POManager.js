@@ -9,7 +9,6 @@ class POManager{
 
     constructor(page,email,password){
     this.page =page;
-    
      this.email=email;
      this.password=password;
     }

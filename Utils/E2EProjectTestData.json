@@ -1,0 +1,20 @@
+
+{
+    "email":"sanapathi@gmail.com",
+    "password":"Bhagya@71",
+    "productName":"iphone 13 pro",
+    "wrongemail":"wrong@gmail.com",
+    "wrongpassword":"wrongpassword",
+    "loginPayLoad": {
+    "userEmail": "sanapathi@gmail.com",
+    "userPassword": "Bhagya@71"
+  },
+  "firstName": "govind",
+  "lastName":"raju",
+  "userEmail":"ramu.baburao@gmail.com",
+  "userMobile": "9985613533",
+  "option": "Engineer",
+  "userPassword":"Nanna@143",
+  "confirmPassword":"Nanna@143"
+
+}

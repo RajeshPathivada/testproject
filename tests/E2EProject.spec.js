@@ -1,8 +1,7 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect,request } = require('@playwright/test');
 const { POManager } = require('../PageObjects/POManager');
-const email = 'sanapathi@gmail.com';
-const password = 'Bhagya@71';
-const productName = 'iphone 13 pro';
+const TestData = require("../Utils/E2EProjectTestData.json");
+const {ApiUtils} = require("../Utils/ApiUtils");
 
 
 let page;
@@ -14,63 +13,46 @@ let placeorderpage;
 let orderconfirmationpage;
 let orderhistorypage;
 let registrationpage;
+let token;
 
 
-// let LoginPayload = {"userEmail":"sanapathi@gmail.com","userPassword":"Bhagya@71"};
-// let Token;
-//By Pass Authentication Using Api calls 
+test.beforeAll("Api Call",async ()=>{
+ const ApiContext = await request.newContext();
+ const apicontext =  new ApiUtils(ApiContext,TestData.loginPayLoad);
+  token = await apicontext.getToken();
 
-// test.beforeAll( async ({request})=>{
 
-  
-//     const ApiContext = await request.newContext();
-//     const LoginResponse = await ApiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login",
-
-//         {data: LoginPayload});
-//      const LoginResponseJson = await LoginResponse.json();
-//       Token = await LoginResponseJson.token;
-  
-
-// })
+});
 
 
 test.beforeEach(async ({ browser }) => {
     const context = await browser.newContext();
     page = await context.newPage();
-    Pomanager = new POManager(page, email, password);
-    dashboardpage = Pomanager.DashboardPage(productName);
+    Pomanager = new POManager(page, TestData.email, TestData.password);
+    dashboardpage = Pomanager.DashboardPage(TestData.productName);
     loginpage = Pomanager.LoginPage();
     checkoutpage = Pomanager.CheckoutPage();
     placeorderpage = Pomanager.PlaceorderPage();
     orderconfirmationpage = Pomanager.OrderconfirmationPage();
     orderhistorypage = Pomanager.OrderhistoryPage();
     registrationpage = Pomanager.RegistrationPage();
+
+     await page.addInitScript(value => {
+
+         window.localStorage.setItem('token', value);
+     }, token);
+
     await loginpage.goTo();
-    await loginpage.validLogin();
 
-})
 
-test.afterEach(async () => {
+});
 
-  await page.close();
- })
 
+test.describe( "Login Bypass", ()=>{
 
 test("@Web Validate user is able to add product to cart and proceed to checkout successfully", async () => {
 
-    //  const loginpage =  await Pomanager.LoginPage();
-    //  await loginpage.goTo(); 
-    // await loginpage.validLogin();
-    // await loginpage.signOut();
-    // await loginpage.invalidLogin("wrong@gmail.com", "wnrgpasword");
-    // const errorMsg = await loginpage.getErrorMessage();
-    // await expect(errorMsg).toBeVisible();
-    // await expect(errorMsg).toHaveText(" Incorrect email or password. ");
-    //  await loginpage.validLogin();
-    //  await page.addInitScript(value => {
 
-    //     window.localStorage.setItem('token', value);
-    // }, Token);
     await dashboardpage.searchProductaddtoCart();
     await dashboardpage.gotoCart();
     await checkoutpage.verifyProductincart();
@@ -86,47 +68,8 @@ test("@Web Validate user is able to add product to cart and proceed to checkout 
 }); 
 
 
-test('@Web Validate user is able to login successfully', async () => {
-
-
-    await expect(page.locator("[aria-label='Login Successfully']")).toBeVisible();
-
-
-});
-
-
-
-test("@Web Validate user is able to register successfully", async () => {
-
-
-    await dashboardpage.signOut();
-    await registrationpage.newUserRegistration();
-
-});
-
-
-
-test("@Web Validate user receives a error popup when an existing user gets registered again", async () => {
-
-    await dashboardpage.signOut();
-    await registrationpage.existingUserRegistration();
-
-
-})
-
-
-test("@Web Validate user is able to receive a popup for any of the invalid credentials", async () => {
-    await dashboardpage.signOut();
-    await loginpage.invalidLogin("wrong@gmail.com", "wrngpassword");
-
-});
-
-
 test("@Web Validate user is able to navigate to home page when user clicks on Automation title from any page", async () => {
-    //  await page.addInitScript(value => {
-
-    //     window.localStorage.setItem('token', value);
-    // }, Token);
+   
     await orderconfirmationpage.goToOrders();
     await dashboardpage.gotoHome();
     await dashboardpage.gotoCart();
@@ -137,10 +80,7 @@ test("@Web Validate user is able to navigate to home page when user clicks on Au
 
 
 test("@Web Validate user is able to search for a product and able to order the product successfully", async () => {
-    //  await page.addInitScript(value => {
-
-    //     window.localStorage.setItem('token', value);
-    // }, Token);
+    
     await dashboardpage.searchProductinSearchBarAddtoCart();
     await dashboardpage.gotoCart();
     await checkoutpage.verifyProductincart();
@@ -152,14 +92,9 @@ test("@Web Validate user is able to search for a product and able to order the p
 
 })
 
-
-
 test("@Web Validate user is able to set minimum and maximum price and then select the first product and able to placee the order successfully", async () => {
     
-    //  await page.addInitScript(value => {
-
-    //     window.localStorage.setItem('token', value);
-    // }, Token);
+   
     await dashboardpage.setMinPriceandMaxPricefindProductAddtoCart();
     await dashboardpage.gotoCart();
     await checkoutpage.verifyProductincart();
@@ -174,10 +109,7 @@ test("@Web Validate user is able to set minimum and maximum price and then selec
 
 test("@Web Validate user is able to click on fashion and validate no products found message", async () => {
     
-    //  await page.addInitScript(value => {
-
-    //     window.localStorage.setItem('token', value);
-    // }, Token);
+ 
 
     await dashboardpage.categorySelection();
 
@@ -187,10 +119,7 @@ test("@Web Validate user is able to click on fashion and validate no products fo
 
 test("@Web Validate user is able to empty orders and validate no orders in the orderspage and then add a product and validate in cart", async () => {
    
-    //  await page.addInitScript(value => {
-
-    //     window.localStorage.setItem('token', value);
-    // }, Token);
+  
     await orderconfirmationpage.goToOrders(); 
     await orderhistorypage.deleteAllOrders();
     await dashboardpage.gotoHome();
@@ -207,19 +136,67 @@ test("@Web Validate user is able to empty orders and validate no orders in the o
 });
 
 
-
 test("@Web Validate user is able to empty cart and validate no products in cart ",async()=>{
     
-    //   page.addInitScript(value => {
-
-    //     window.localStorage.setItem('token', value);
-    // }, Token);
+ 
     await dashboardpage.gotoCart();
     await dashboardpage.deleteAllCartItems();
 
    
 
 });
+
+});
+
+
+test.describe("Landing on Login Page",()=>{
+
+    
+
+test('@Web Validate user is able to login successfully', async () => {
+
+    await dashboardpage.signOut();
+    await loginpage.validLogin();
+    await expect(page.locator("[aria-label='Login Successfully']")).toBeVisible();
+
+});
+
+
+
+test("@Web Validate user is able to register successfully", async () => {
+
+
+      await dashboardpage.signOut();
+    await registrationpage.newUserRegistration();
+
+});
+
+
+
+test("@Web Validate user receives a error popup when an existing user gets registered again", async () => {
+
+     await dashboardpage.signOut();
+    await registrationpage.existingUserRegistration();
+
+
+})
+
+
+test("@Web Validate user is able to receive a popup for any of the invalid credentials", async () => {
+  
+      await dashboardpage.signOut();
+    await loginpage.invalidLogin(TestData.wrongemail,TestData.wrongpassword );
+
+});
+
+
+
+})
+
+
+
+
+
 
 
 

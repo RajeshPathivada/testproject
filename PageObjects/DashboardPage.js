@@ -1,11 +1,12 @@
 const { expect } = require('@playwright/test');
+const{TestData}=require("../Utils/E2EProjectTestData.json");
 
 class DashboardPage {
 
-    constructor(page, productName) {
+    constructor(page,productName) {
 
         this.page = page;
-        this.productName = productName;
+       this.productName=productName;
     }
 
     async searchProductaddtoCart() {

@@ -10,9 +10,10 @@ export default defineConfig({
   timeout: 50000,
   expect:{
 
-    timeout: 20000,
+    timeout: 30000,
   }
   ,
+  
   
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

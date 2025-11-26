@@ -1,18 +1,20 @@
-class ApiUtils{
+class ApiUtils {
 
-    constructor(){
+    constructor(ApiContext, loginPayLoad) {
 
+        this.ApiContext = ApiContext;
+        this.loginPayLoad = loginPayLoad;
     }
 
-    async getToken(){
+    async getToken() {
 
-        
+
+        const response = await this.ApiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", { data: this.loginPayLoad },);
+        const responseJson = await response.json();
+        const Token = await responseJson.token;
+        return Token;
+
     }
-
-    async createOrder(){
-
-        
-    }
-
 
 }
+module.exports = { ApiUtils };
