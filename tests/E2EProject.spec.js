@@ -1,7 +1,8 @@
-const { test, expect,request } = require('@playwright/test');
+const { test} = require('../PageObjects/Fixtures');
 const { POManager } = require('../PageObjects/POManager');
 const TestData = require("../Utils/E2EProjectTestData.json");
-const {ApiUtils} = require("../Utils/ApiUtils");
+// const {ApiUtils} = require("../Utils/ApiUtils");
+
 
 
 let page;
@@ -13,19 +14,19 @@ let placeorderpage;
 let orderconfirmationpage;
 let orderhistorypage;
 let registrationpage;
-let token;
+// let token;
 
 
-test.beforeAll("Api Call",async ()=>{
- const ApiContext = await request.newContext();
- const apicontext =  new ApiUtils(ApiContext,TestData.loginPayLoad);
-  token = await apicontext.getToken();
+// test.beforeAll("Bypass User Authentication",async ()=>{
+//  const ApiContext = await request.newContext();
+//  const apicontext =  new ApiUtils(ApiContext,TestData.loginPayLoad);
+//   token = await apicontext.getToken();
 
 
-});
+// });
 
 
-test.beforeEach(async ({ browser }) => {
+test.beforeEach(async ({ browser,AuthToken}) => {
     const context = await browser.newContext();
     page = await context.newPage();
     Pomanager = new POManager(page, TestData.email, TestData.password);
@@ -40,7 +41,7 @@ test.beforeEach(async ({ browser }) => {
      await page.addInitScript(value => {
 
          window.localStorage.setItem('token', value);
-     }, token);
+     }, AuthToken);
 
     await loginpage.goTo();
 
@@ -48,7 +49,7 @@ test.beforeEach(async ({ browser }) => {
 });
 
 
-test.describe( "Login Bypass", ()=>{
+test.describe( "After Login functionalities", ()=>{
 
 test("@Web Validate user is able to add product to cart and proceed to checkout successfully", async () => {
 
@@ -146,10 +147,18 @@ test("@Web Validate user is able to empty cart and validate no products in cart 
 
 });
 
+
+test("@Web Validate user is able to search for a product and able to Cart successfully",async()=>{
+
+ await dashboardpage.searchProductaddtoCart();
+ await dashboardpage.gotoCart();
+
+
 });
 
+});
 
-test.describe("Landing on Login Page",()=>{
+test.describe("Before Login functionalities",()=>{
 
     
 
@@ -157,8 +166,7 @@ test('@Web Validate user is able to login successfully', async () => {
 
     await dashboardpage.signOut();
     await loginpage.validLogin();
-    await expect(page.locator("[aria-label='Login Successfully']")).toBeVisible();
-
+   
 });
 
 

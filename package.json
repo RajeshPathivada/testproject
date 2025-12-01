@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webtests": "npx playwright test --grep @Web"
+    "webtests": "npx playwright test --grep @Web",
+    "regression": "npx playwright test"
   },
   "keywords": [],
   "author": "",

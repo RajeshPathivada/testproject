@@ -1,6 +1,6 @@
 
 import { defineConfig, devices } from '@playwright/test';
-import { flushCompileCache } from 'module';
+
 
 export default defineConfig({
   testDir: './tests',
@@ -11,8 +11,9 @@ export default defineConfig({
   expect:{
 
     timeout: 30000,
-  }
-  ,
+  },
+  retries: 0,
+  
   
   
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -23,6 +24,7 @@ export default defineConfig({
     screenshot: 'off',
     video: 'off',
     headless: false,
+  
   
   },
 
