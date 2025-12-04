@@ -1,7 +1,8 @@
-const { test} = require('../PageObjects/Fixtures');
+const {test} = require("../PageObjects/Fixtures");
+const{request} = require("@playwright/test");
 const { POManager } = require('../PageObjects/POManager');
 const TestData = require("../Utils/E2EProjectTestData.json");
-// const {ApiUtils} = require("../Utils/ApiUtils");
+ const {ApiUtils} = require("../Utils/ApiUtils");
 
 
 
@@ -14,16 +15,16 @@ let placeorderpage;
 let orderconfirmationpage;
 let orderhistorypage;
 let registrationpage;
-// let token;
+let orderId;
 
 
-// test.beforeAll("Bypass User Authentication",async ()=>{
-//  const ApiContext = await request.newContext();
-//  const apicontext =  new ApiUtils(ApiContext,TestData.loginPayLoad);
-//   token = await apicontext.getToken();
+test.beforeAll("Create Order API",async ()=>{
+ const ApiContext = await request.newContext();
+ const apicontext =  new ApiUtils(ApiContext,TestData.loginPayLoad,TestData.orderPayload);
+ orderId = await apicontext.createOrder();
 
 
-// });
+});
 
 
 test.beforeEach(async ({ browser,AuthToken}) => {
@@ -60,7 +61,7 @@ test("@Web Validate user is able to add product to cart and proceed to checkout 
     await checkoutpage.checkOut();
     await placeorderpage.enterPaymentDetails();
     await placeorderpage.placeOrder();
-    const orderId = await orderconfirmationpage.verifyOrderConfirmation();
+    await orderconfirmationpage.verifyOrderConfirmation();
     await orderconfirmationpage.goToOrders();
     await orderhistorypage.viewOrderDetails(orderId);
     await orderhistorypage.verifyProduct(orderId);

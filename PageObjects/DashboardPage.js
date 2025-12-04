@@ -1,5 +1,4 @@
-const { expect } = require('@playwright/test');
-const{TestData}=require("../Utils/E2EProjectTestData.json");
+const {expect} = require('@playwright/test');
 
 class DashboardPage {
 

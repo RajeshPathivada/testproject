@@ -9,9 +9,13 @@
     "userEmail": "sanapathi@gmail.com",
     "userPassword": "Bhagya@71"
   },
+  "orderPayload":
+  {
+    "orders":[{"country":"Australia","productOrderedId":"68a961719320a140fe1ca57c"}]
+  },
   "firstName": "govind",
   "lastName":"raju",
-  "userEmail":"ramu.ravindran@gmail.com",
+  "userEmail":"shekar.ramu@gmail.com",
   "userMobile": "9985613533",
   "option": "Engineer",
   "userPassword":"Nanna@143",

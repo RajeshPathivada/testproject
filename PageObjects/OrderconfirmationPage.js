@@ -12,9 +12,7 @@ class OrderconfirmationPage {
 
         await expect(this.page.locator(".hero-primary")).toContainText("Thankyou for the order.");
          await expect(this.page.getByText('iphone 13 pro')).toBeVisible();
-        const orderId = await this.page.locator("label[class ='ng-star-inserted']").textContent();
-        console.log(orderId);
-        return orderId;
+       
 
     }
 
