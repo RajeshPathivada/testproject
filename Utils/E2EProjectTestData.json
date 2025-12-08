@@ -13,12 +13,23 @@
   {
     "orders":[{"country":"Australia","productOrderedId":"68a961719320a140fe1ca57c"}]
   },
-  "firstName": "govind",
-  "lastName":"raju",
-  "userEmail":"shekar.ramu@gmail.com",
-  "userMobile": "9985613533",
-  "option": "Engineer",
-  "userPassword":"Nanna@143",
-  "confirmPassword":"Nanna@143"
+  "firstName": "Harika",
+  "lastName":"Moningi",
+  "userEmail":"harika.pathivadas@gmail.com",
+  "option": "Student",
+  "userPassword":"Amma@143",
+  "confirmPassword":"Amma@143",
+  "url": "https://rahulshettyacademy.com/client/#/auth/login",
+  "minPrice": "12000",
+  "maxPrice": "55000",
+  "cardNumber": "1234 4567 2345 1234",
+  "month":"10",
+  "year": "28",
+  "nameOnCard": "Rajesh Pathivada",
+  "couponCode": "rahulshettyacademy",
+  "country": "India",
+  "cvv":"435",
+  "mobileNumber":"9986751233",
+  "gender": "Male"
 
 }

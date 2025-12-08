@@ -5,23 +5,25 @@ class OrderconfirmationPage {
     constructor(page) {
 
         this.page=page;
-        
+        this.orderConfirmationMessage = page.locator(".hero-primary");
+        this.ordersButton = page.getByRole('button', { name: 'ORDERS' });
+        this.yourOrdersText = page.getByText("Your Orders");
     }
 
-    async verifyOrderConfirmation() {
+    async verifyOrderConfirmation(productName) {
 
-        await expect(this.page.locator(".hero-primary")).toContainText("Thankyou for the order.");
-         await expect(this.page.getByText('iphone 13 pro')).toBeVisible();
-       
-
+        await expect(this.orderConfirmationMessage).toContainText("Thankyou for the order.");
+         await expect( this.page.getByText(productName)).toBeVisible();   
     }
 
     async goToOrders() {
 
-          await this.page.getByRole('button', { name: 'ORDERS' }).click();
-           await expect(this.page.getByText("Your Orders")).toBeVisible();
-       
+          await this.ordersButton.click();    
 
+    }
+
+    async validateYourOrdersText(){
+         await expect(this.yourOrdersText).toBeVisible();
     }
 
 }

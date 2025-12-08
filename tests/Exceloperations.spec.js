@@ -1,16 +1,13 @@
 const ExcelJs = require('exceljs');
 const { test, expect } = require('@playwright/test');
 
-
-
 async function Readfile(path,originaltext, replacedtext,change) {
     const workbook = new ExcelJs.Workbook();
  await workbook.xlsx.readFile(path);
  const worksheet = workbook.getWorksheet('Sheet1');
  Writefile(path,originaltext,replacedtext,worksheet,workbook,change);
- 
+
 }
- 
  
   async function Writefile(path,originaltext,replacedtext,worksheet,workbook,change) {
    let output ={ row:-1, column:-1}
@@ -22,8 +19,6 @@ async function Readfile(path,originaltext, replacedtext,change) {
              { 
                 output.row = rowNumber;
                 output.column= colNumber;
-                
-
              }
           })   
          
@@ -35,8 +30,8 @@ async function Readfile(path,originaltext, replacedtext,change) {
 
 }
 
-
 //Readfile('C:\\Users\\rpathivada\\Downloads\\ExceldownloadTest.xlsx', "Kivi",350,{rowChange:0,colChange:2 }); 
+
 
 test( 'Upload-download test',  async({page})=>
 {
@@ -50,5 +45,5 @@ test( 'Upload-download test',  async({page})=>
    const desiredrow  = page.getByRole("row").filter({ has: textlocator });
      await expect(desiredrow.locator("#cell-4-undefined")).toContainText(updated);
 
-})
+});
 

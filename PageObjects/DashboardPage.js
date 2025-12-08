@@ -1,24 +1,41 @@
-const {expect} = require('@playwright/test');
+const { expect } = require('@playwright/test');
 
 class DashboardPage {
 
-    constructor(page,productName) {
+    constructor(page) {
 
         this.page = page;
-       this.productName=productName;
+        this.firstProduct = page.locator(".card-body").first();
+        this.products = page.locator(".card-body");
+        this.productTitles = page.locator(".card-body b");
+        this.homePage = page.locator("nav p");
+        this.filterText = page.locator("section #burgundy");
+        this.gotocart = page.locator("[routerlink*='cart']");
+        this.myCartText = page.locator("text=My Cart");
+        this.signoutButton = page.getByRole('button', { name: ' Sign Out ' });
+        this.logoutSuccessMessage = page.locator("[aria-label='Logout Successfully']"); 
+        this.searchBar = page.locator("div[class='py-2 border-bottom ml-3'] input[placeholder='search']");
+        this.results = page.locator("#res");
+        this.addToCartButton = page.locator('button:has-text("Add To Cart")');
+        this.minPrice = page.locator("section input[placeholder='Min Price']");
+        this.maxPrice = page.locator("section input[placeholder='Max Price']");
+        this.checkbox = page.locator("section input[type='checkbox']").first();
+        this.noProductsFoundMessage = page.locator("[aria-label='No Products Found']");
+        this.productInCart = page.locator("div ul[class*='ng-star-inserted']");
+        this.noProductsInCartMessage = page.getByText("No Products in Your Cart !");
+
     }
 
-    async searchProductaddtoCart() {
+    async searchProductaddtoCart(productName) {
 
-        await this.page.locator(".card-body").first().waitFor();
-        const products = this.page.locator(".card-body");
-        const productTitles = this.page.locator(".card-body b");
-        const NoofProducts = await productTitles.count();
+        await this.firstProduct.waitFor();
+
+        const NoofProducts = await this.productTitles.count();
         for (let i = 0; i < NoofProducts; i++) {
 
-            if (await products.nth(i).locator("b").textContent() === this.productName) {
+            if (await this.products.nth(i).locator("b").textContent() === productName) {
 
-                await products.nth(i).locator('text=  Add To Cart').click();
+                await this.products.nth(i).locator('text=  Add To Cart').click();
                 break;
             }
 
@@ -27,70 +44,99 @@ class DashboardPage {
     }
 
     async gotoHome() {
-        await this.page.locator("nav p").click();
-        await expect(this.page.locator("section #burgundy")).toBeVisible();
+        await this.homePage.click();
+       
     }
 
+    async validateFilterstext(){
+         await expect(this.filterText).toBeVisible();
+    }
     async gotoCart() {
 
-        await this.page.locator("[routerlink*='cart']").click();
-        await expect(this.page.locator("text=My Cart")).toBeVisible();
+        await this.gotocart.click();
+        
 
     }
+
+    async validateMyCartText(){
+        await expect(this.myCartText).toBeVisible();
+    }
+
+
 
 
     async signOut() {
-        await this.page.getByRole('button', { name: ' Sign Out ' }).click();
-        await expect(this.page.locator("[aria-label='Logout Successfully']")).toBeVisible();
+        await this.signoutButton.click();
+        
+
+    }
+    
+    async validateLogoutSuccessMessage(){
+        await expect(this.logoutSuccessMessage).toBeVisible();
+    }
+
+
+    async searchProductinSearchBar(productName) {
+
+        await this.searchBar.click();
+        await this.searchBar.pressSequentially(productName, { delay: 150 });
+        await this.searchBar.press("Enter");
 
     }
 
-    async searchProductinSearchBarAddtoCart() {
-
-        const searchbar = this.page.locator("div[class='py-2 border-bottom ml-3'] input[placeholder='search']");
-        await searchbar.click();
-        await searchbar.pressSequentially("iphone", { delay: 150 });
-        await searchbar.press("Enter");
 
 
-        const results = await this.page.locator("#res");
-        await expect(results).toHaveText("Showing 1 results   | ");
-        await this.page.locator('button:has-text("Add To Cart")').click();
+    async setMinprice(minPrice){
+         await this.minPrice.click();
+        await this.minPrice.fill(minPrice);
+    }
 
+    async setMaxprice(maxPrice){
+
+         await this.maxPrice.click();
+        await this.maxPrice.fill(maxPrice);
+         await this.maxPrice.press("Enter");
+    }
+
+
+  
+
+    async validateResultsareDisplayed(){
+        
+        await expect(this.results).toContainText("Showing 1 results   | ");
+       
 
     }
 
-    async setMinPriceandMaxPricefindProductAddtoCart() {
-
-        const minPrice = await this.page.locator("section input[placeholder='Min Price']");
-        const maxPrice = await this.page.locator("section input[placeholder='Max Price']");
-        await minPrice.click();
-        await minPrice.fill("12000");
-        await maxPrice.click();
-        await maxPrice.fill("55000");
-        await maxPrice.press("Enter");
-        const results = await this.page.locator("#res");
-        await expect(results).toHaveText("Showing 1 results   | ");
-        await this.page.locator('button:has-text("Add To Cart")').click();
-
+    async addtoCart(){
+         await this.addToCartButton.click();
     }
+
+
 
     async categorySelection() {
-        await this.page.locator("section input[type='checkbox']").first().click();
-        await expect(this.page.locator("[aria-label='No Products Found']")).toHaveText(" No Products Found ");
+        await this.checkbox.click();
+        
     }
 
+    async validateNoProductsFoundMessage(){
+        await expect(this.noProductsFoundMessage).toHaveText(" No Products Found ");
+    }
 
     async deleteAllCartItems() {
 
-        const products = await this.page.locator("div ul[class*='ng-star-inserted']");
-        const NoofProducts = await products.count();
+
+        const NoofProducts = await this.products.count();
         for (let i = NoofProducts - 1; i >= 0; i--) {
-            await products.nth(i).locator(".btn.btn-danger").click();
+            await this.products.nth(i).locator(".btn.btn-danger").click();
             await this.page.waitForTimeout(5000);
 
         }
-        await expect(this.page.getByText("No Products in Your Cart !")).toBeVisible();
+       
+    }
+
+    async validateNoProductsinCartMessage(){
+         await expect(this.noProductsInCartMessage).toBeVisible();
     }
 
 }

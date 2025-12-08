@@ -5,18 +5,19 @@ class CheckoutPage{
     constructor(page){
         
         this.page= page;
-        
+        //Parameterize this xpath 
+        this.checkoutButton = page.getByRole("button",{name: 'Checkout'})
 
 
     }
-    async verifyProductincart(){
-
-         await  expect(this.page.locator('h3:has-text("IPHONE 13 PRO")')).toBeVisible();
+    async verifyProductinCart(productName){
+         
+         await  expect(this.page.getByText(productName)).toBeVisible();
     }
     
     async checkOut(){
 
-          await this.page.getByRole("button",{name: 'Checkout'}).click();
+          await this.checkoutButton.click();
     }
 }
 
