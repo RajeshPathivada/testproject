@@ -1,50 +1,27 @@
-const Exceljs = require("exceljs");
-const {test,expect}= require("@playwright/test");
+const {test} =require("@playwright/test");
+
+test("",async({browser})=>{
 
 
-
-test("EXcel operatios",async()=>{
-
+   const context =  await browser.newContext();
+   const page = await context.newPage();
+   const documentlink =  page.locator(".blinkingText");
+   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
   
-    let output ={
-    row :-1,
-    column: -1
-}
-const workbook = new Exceljs.Workbook();
+ 
 
-await workbook.xlsx.readFile("C:\\Users\\rpathivada\\Downloads\\download.xlsx");
-
-
-const worksheet = workbook.getWorksheet("Sheet1");
-
-
-worksheet.eachRow( (row,rowNumber)=>{
-
- row.eachCell((cell, colNumber)=>{
-
-
-
-         if (cell.text.trim() === "Banana"){
-
-            output.row = rowNumber;
-            output.column= colNumber; 
-           
-         }   
-
-
-})
-
-})
+  const [newPage] = await Promise.all([
+    context.waitForEvent("page"),
+    documentlink.click(),
+  ]);
 
   
 
-console.log(output.row);
-
-await workbook.xlsx.writeFile("C:\\Users\\rpathivada\\Downloads\\download.xlsx");
-
-
-});
+    
+   const title = await newPage.locator(".inner-box").textContent();
+   console.log(title);
 
 
 
 
+})

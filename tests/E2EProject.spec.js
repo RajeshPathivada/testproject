@@ -26,14 +26,14 @@ test.beforeAll("Create Order API", async () => {
 test.beforeEach(async ({ browser, AuthToken }) => {
     const context = await browser.newContext();
     page = await context.newPage();
-    Pomanager = new POManager(page, TestData.email, TestData.password);
-    dashboardpage = Pomanager.DashboardPage(TestData.productName);
-    loginpage = Pomanager.LoginPage();
-    checkoutpage = Pomanager.CheckoutPage();
-    placeorderpage = Pomanager.PlaceorderPage();
-    orderconfirmationpage = Pomanager.OrderconfirmationPage();
-    orderhistorypage = Pomanager.OrderhistoryPage();
-    registrationpage = Pomanager.RegistrationPage();
+    Pomanager = new POManager(page);
+    dashboardpage = Pomanager.dashboardPage();
+    loginpage = Pomanager.loginPage();
+    checkoutpage = Pomanager.checkoutPage();
+    placeorderpage = Pomanager.placeorderPage();
+    orderconfirmationpage = Pomanager.orderConfirmationPage();
+    orderhistorypage = Pomanager.orderHistoryPage();
+    registrationpage = Pomanager.registrationPage();
 
     await page.addInitScript(value => {
 
@@ -42,6 +42,11 @@ test.beforeEach(async ({ browser, AuthToken }) => {
 
     await loginpage.goTo(TestData.url);
 });
+
+test.afterEach("Page close", ()=>{
+
+     page.close();
+})
 
 
 test.describe("After Login functionalities", () => {
@@ -232,17 +237,7 @@ test.describe("Before Login functionalities", () => {
         await loginpage.invalidLoginMessage();
 
     });
-
-
-
 })
-
-
-
-
-
-
-
 
 
 

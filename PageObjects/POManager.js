@@ -7,38 +7,37 @@ const{OrderhistoryPage}=require("../PageObjects/OrderhistoryPage");
 const{RegistrationPage}= require("../PageObjects/RegistrationPage");
 class POManager{
 
-    constructor(page,email,password){
+    constructor(page){
     this.page =page;
-     this.email=email;
-     this.password=password;
+   
     }
    
-     LoginPage(){
+     loginPage(){
     
-         return new LoginPage(this.page, this.email, this.password);
+         return new LoginPage(this.page);
     }
 
-     DashboardPage(productName){
-        return new DashboardPage(this.page, productName);
+     dashboardPage(){
+        return new DashboardPage(this.page);
     }
 
-     CheckoutPage(){
+     checkoutPage(){
         return new CheckoutPage(this.page);
     }
-     PlaceorderPage(){
+     placeorderPage(){
 
         return new PlaceorderPage(this.page);
     }
 
-     OrderconfirmationPage(){
+     orderConfirmationPage(){
       return   new OrderconfirmationPage(this.page);
     }
 
-     OrderhistoryPage(){
-       return  new OrderhistoryPage(this.page,this.orderId);
+     orderHistoryPage(){
+       return  new OrderhistoryPage(this.page);
     }
 
-     RegistrationPage(){
+     registrationPage(){
         
         return new RegistrationPage(this.page)
     } 
