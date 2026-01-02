@@ -43,6 +43,6 @@ steps:
 - task: PublishPipelineArtifact@1
   displayName: "Publish Playwright HTML Report"
   inputs:
-    targetPath: 'tests/playwright-report'
+    targetPath: 'playwright-report'
     artifact: 'Playwright-Report'
     publishLocation: 'pipeline'
