@@ -16,5 +16,13 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    npx playwright test --workers=1
+    npx playwright test --workers=2
   displayName: 'Run Playwright tests'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: tests/playwright-report
+    artifact: PlaywrightReport
+    publishLocation: pipeline
+
+
