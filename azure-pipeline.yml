@@ -1,28 +1,48 @@
 trigger:
-- main
+- main   # change branch if needed
 
 pool:
-  name: local-windows-agent
+  name: local-windows-agent   # MUST match your self-hosted agent pool name
 
 steps:
+
+# 1️⃣ Use Node.js
 - task: NodeTool@0
+  displayName: "Use Node.js"
   inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js'
+    versionSpec: '20.x'
 
-- script: |
-    npm install
-    npx playwright install
-  displayName: 'Install dependencies'
+# 2️⃣ Install dependencies
+- task: PowerShell@2
+  displayName: "Install npm dependencies"
+  inputs:
+    targetType: 'inline'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    script: |
+      npm ci
 
-- script: |
-    npx playwright test --workers=2
-  displayName: 'Run Playwright tests'
+# 3️⃣ Install Playwright browsers
+- task: PowerShell@2
+  displayName: "Install Playwright browsers"
+  inputs:
+    targetType: 'inline'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    script: |
+      npx playwright install --with-deps
 
+# 4️⃣ Run ONLY E2EProject.spec.js (NO parallel)
+- task: PowerShell@2
+  displayName: "Run Playwright E2E tests"
+  inputs:
+    targetType: 'inline'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    script: |
+      npx playwright test tests/E2EProject.spec.js --workers=2
+
+# 5️⃣ Publish Playwright HTML report
 - task: PublishPipelineArtifact@1
+  displayName: "Publish Playwright HTML Report"
   inputs:
-    targetPath: tests/playwright-report
-    artifact: PlaywrightReport
-    publishLocation: pipeline
-
-
+    targetPath: 'tests/playwright-report'
+    artifact: 'Playwright-Report'
+    publishLocation: 'pipeline'
