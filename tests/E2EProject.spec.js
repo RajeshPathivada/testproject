@@ -43,10 +43,6 @@ test.beforeEach(async ({ browser, AuthToken }) => {
     await loginpage.goTo(TestData.url);
 });
 
-test.afterEach("Page close", ()=>{
-
-     page.close();
-})
 
 
 test.describe("After Login functionalities", () => {

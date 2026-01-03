@@ -22,7 +22,7 @@ export default defineConfig({
     browserName: 'chromium',
     screenshot: 'off',
     video: 'off',
-    headless: false,
+    headless: true,
   
   
   },
