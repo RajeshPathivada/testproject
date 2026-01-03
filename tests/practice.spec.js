@@ -5,8 +5,8 @@ test("",async({browser})=>{
 
    const context =  await browser.newContext();
    const page = await context.newPage();
-   const documentlink =  page.locator(".blinkingText");
-   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+  //  const documentlink =  page.locator(".blinkingText");
+  //  await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
   
  
 
