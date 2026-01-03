@@ -1,5 +1,5 @@
 trigger:
-- main   # change branch if needed
+- master   # change branch if needed
 
 pool:
   name: local-windows-agent   # MUST match your self-hosted agent pool name
