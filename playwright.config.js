@@ -3,8 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 
 export default defineConfig({
-  // reporter: [['html', { open: 'never' }]],
-  reporter: [['html', { open: 'always' }]],
+  reporter: [['html', { open: 'never' }]],
+  // reporter: [['html', { open: 'always' }]],
   testDir: './tests',
   retries: 0,
   timeout: 50000,
