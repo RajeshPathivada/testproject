@@ -36,6 +36,7 @@ test("intercepting api calls practice", async ({ page }) => {
   )
 
 
+
   // 4️⃣ Navigate to client app
   await page.goto("https://rahulshettyacademy.com/client");
 

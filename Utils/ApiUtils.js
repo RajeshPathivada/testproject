@@ -1,3 +1,5 @@
+const {expect} = require('@playwright/test');
+
 class ApiUtils {
 
     constructor(ApiContext, loginPayLoad,orderPayload) {
@@ -19,10 +21,12 @@ class ApiUtils {
                 data: this.orderPayload,
                 headers: {
 
-                    "Authorization": await this.getToken()
+                    "Authorization": await this.getToken(),
                 }
 
             });
+
+            expect(OrderResponse.ok()).toBeTruthy();
         const Jsonresponse = await OrderResponse.json();
 
         const orderId = await Jsonresponse.orders[0];

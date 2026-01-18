@@ -1,0 +1,14 @@
+[
+  {
+    "scenario": "valid login",
+    "email": "sanapathi@gmail.com",
+    "password": "Bhagya@71",
+    "expected": "success"
+  },
+  {
+    "scenario": "invalid login",
+    "email": "wrong@gmail.com",
+    "password": "wrongpassword",
+    "expected": "error"
+  }
+]

@@ -5,7 +5,6 @@ test("Screenshot test", async ({ page }) => {
    await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
       await page.goto("http://google.com");
       await page.goBack();
-      await page.goForward();
 
    await expect(page.locator("#displayed-text")).toBeVisible();
    await page.locator("#displayed-text").screenshot({path: 'element screenshot.png'});
@@ -20,7 +19,9 @@ test("Screenshot test", async ({ page }) => {
 test("visual test", async ({ page }) => {
 
    await page.goto("https://en.wikipedia.org/wiki/Narendra_Modi");
-   
-    expect (await page.screenshot()).toMatchSnapshot("modi.png");
+   await page.waitForLoadState('networkidle');
+
+   // Capture full-page screenshot for visual regression testing
+   expect(await page.screenshot()).toMatchSnapshot('modi.png');
 
 });

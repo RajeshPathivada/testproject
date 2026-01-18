@@ -3,7 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 
 export default defineConfig({
-  reporter: [['html', { open: 'never' }]],
+  // reporter: [['html', { open: 'never' }]],
+  reporter: [['html', { open: 'always' }]],
   testDir: './tests',
   retries: 0,
   timeout: 50000,
@@ -18,11 +19,12 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     
-    trace: 'off',
+    trace: 'on',
     browserName: 'chromium',
     screenshot: 'off',
     video: 'off',
-    headless: true,
+    headless: false,
+    // storageState: 'auth.json',
   
   
   },

@@ -3,6 +3,8 @@ const { request } = require("@playwright/test");
 const { POManager } = require('../PageObjects/POManager');
 const TestData = require("../Utils/E2EProjectTestData.json");
 const { ApiUtils } = require("../Utils/ApiUtils");
+const {dynamicData} = require("../Utils/dynamicData");
+
 
 let page;
 let Pomanager;
@@ -23,6 +25,7 @@ test.beforeAll("Create Order API", async () => {
 });
 
 
+// @ts-ignore
 test.beforeEach(async ({ browser, AuthToken }) => {
     const context = await browser.newContext();
     page = await context.newPage();
@@ -43,6 +46,11 @@ test.beforeEach(async ({ browser, AuthToken }) => {
     await loginpage.goTo(TestData.url);
     
 });
+
+
+test.afterEach(async () => {  
+    await page.close();
+}   );
 
 
 
@@ -172,7 +180,7 @@ test.describe("Before Login functionalities", () => {
 
 
 
-    test('@Web Validate user is able to login successfully', async () => {
+    test.only('@Web Validate user is able to login successfully', async () => {
 
         await dashboardpage.signOut();
         await dashboardpage.validateLogoutSuccessMessage();
@@ -186,18 +194,21 @@ test.describe("Before Login functionalities", () => {
 
 
     test("@Web Validate user is able to register successfully", async () => {
+      
+        const dynamicdata = new dynamicData();
+        const user = await dynamicdata.generateDynamicTestData();
 
         await dashboardpage.signOut();
         await dashboardpage.validateLogoutSuccessMessage();
         await registrationpage.newUserRegistration();
-        await registrationpage.firstName(TestData.firstName);
-        await registrationpage.lastName(TestData.lastName);
-        await registrationpage.userEmail(TestData.userEmail);
-        await registrationpage.mobileNumber(TestData.mobileNumber);
-        await registrationpage.occupation(TestData.option);
+        await registrationpage.firstName(user.firstName);
+        await registrationpage.lastName(user.lastName);
+        await registrationpage.userEmail(user.email);
+        await registrationpage.mobileNumber(user.mobileNumber);
+        await registrationpage.occupation(user.option);
         await registrationpage.maleOption();
-        await registrationpage.password(TestData.userPassword);
-        await registrationpage.confirmPassword(TestData.confirmPassword);
+        await registrationpage.password(user.userPassword);
+        await registrationpage.confirmPassword(user.confirmPassword);
         await registrationpage.checkbox();
         await registrationpage.register();
         await registrationpage.validateNewUserRegistrationMessage();
@@ -205,7 +216,7 @@ test.describe("Before Login functionalities", () => {
 
 
     test("@Web Validate user receives a error popup when an existing user gets registered again", async () => {
-
+        // Use constant test data to trigger "existing user" error
         await dashboardpage.signOut();
         await dashboardpage.validateLogoutSuccessMessage();
         await registrationpage.existingUserRegistration();

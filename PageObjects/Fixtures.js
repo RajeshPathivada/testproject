@@ -1,8 +1,8 @@
-const base = require("@playwright/test");
+const {test,expect} = require("@playwright/test");
 
 
 
-exports.test = base.test.extend({
+exports.test = test.extend({
 
     AuthToken: async ({ request }, use) => {
 
@@ -14,8 +14,9 @@ exports.test = base.test.extend({
                     userPassword: "Bhagya@71"
                 }
             });
+         expect(response.ok()).toBeTruthy();
         const responseJson = await response.json();
-        const Token = await responseJson.token;
+        const Token =  responseJson.token;
         await use(Token);
 
     },
