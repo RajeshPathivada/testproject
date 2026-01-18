@@ -180,7 +180,7 @@ test.describe("Before Login functionalities", () => {
 
 
 
-    test.only('@Web Validate user is able to login successfully', async () => {
+    test('@Web Validate user is able to login successfully', async () => {
 
         await dashboardpage.signOut();
         await dashboardpage.validateLogoutSuccessMessage();
