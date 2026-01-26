@@ -56,7 +56,7 @@ test.afterEach(async () => {
 
 test.describe("After Login functionalities", () => {
 
-    test.only("@Web Validate user is able to add product to cart and proceed to checkout successfully", async () => {
+    test("@Web Validate user is able to add product to cart and proceed to checkout successfully", async () => {
         await dashboardpage.searchProductaddtoCart(TestData.productName);
         await dashboardpage.gotoCart();
         await checkoutpage.verifyProductinCart(TestData.productName);
