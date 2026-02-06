@@ -13,7 +13,9 @@ const token = await practiceapi.apicontext();
     await page.addInitScript(value => {
         window.localStorage.setItem("token",value)} ,token);    
    
- 
+ await page.addInitScript(value =>{
+    window.localStorage.setItem("token",value)},token);
+ })
 
 
  await page.goto("https://rahulshettyacademy.com/client/#/auth/login");

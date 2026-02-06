@@ -28,14 +28,20 @@ test("intercepting api calls practice", async ({ page }) => {
     
   await page.route("https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*",
 
-    async route =>{
-        route.fulfill({
-            body: JSON.stringify(fakepayLoad),
-        })
-    }
-  )
+  //   async route =>{
+  //       route.fulfill({
+  //           body: JSON.stringify(fakepayLoad),
+  //       })
+  //   }
+  // )
+
+await page.route("url",async route =>{
+  route.fulfill({
+    body : JSON.stringify(fakepayLoad),
 
 
+  })
+})
 
   // 4️⃣ Navigate to client app
   await page.goto("https://rahulshettyacademy.com/client");
